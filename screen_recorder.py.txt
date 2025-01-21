@@ -1,0 +1,24 @@
+import pyautogui
+import numpy as np
+import cv2
+
+screen_size = pyautogui.size()  # Get screen size
+
+fourcc = cv2.VideoWriter_fourcc(*'XVID')  # Codec to save the video
+output = cv2.VideoWriter('screen_recording.avi', fourcc, 20.0, (screen_size))  # Output file settings
+
+while True:
+    screenshot = pyautogui.screenshot()  # Capture the screenshot
+    frame = np.array(screenshot)  # Convert to numpy array
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # Convert color to RGB
+
+    output.write(frame)  # Write to the video file
+
+    cv2.imshow("Screen Recording", frame)  # Display recording
+
+    # Stop recording with 'q' key
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+output.release()  # Release the output file
+cv2.destroyAllWindows()  # Close all OpenCV windows
